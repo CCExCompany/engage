@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class DestroyByContact : MonoBehaviour
 {
+	LivesManager lm = null;
     public GameObject explosion;
     public GameObject playerExplosion;
     public int scoreValue;
@@ -11,6 +13,10 @@ public class DestroyByContact : MonoBehaviour
 
     void Start()
     {
+		GameObject gameObject = GameObject.Find ("LivesManager");
+
+			// Get LivesManager component
+		lm = gameObject.GetComponent<LivesManager> ();
         GameObject gameControllerObject = GameObject.FindWithTag("GameController");
         if (gameControllerObject != null)
         {
@@ -38,6 +44,7 @@ public class DestroyByContact : MonoBehaviour
         {
             Instantiate(playerExplosion, other.transform.position, other.transform.rotation);
             gameController.GameOver();
+			lm.looseOneLife ();
         }
 
         gameController.AddScore(scoreValue);

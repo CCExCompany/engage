@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
+	LivesManager lm = null;
     public GameObject[] hazards;
     public Vector3 spawnValues;
     public int hazardCount;
@@ -22,13 +25,22 @@ public class GameController : MonoBehaviour
     {
         gameOver = false;
         restart = false;
-        restartText.text = "Press 'R' for Restart";
         gameOverText.text = "";
+	    restartText.text = "";
         score = 0;
         UpdateScore();
         StartCoroutine(SpawnWaves());
-    }
-
+						// Get LivesManager object from the scene
+		GameObject gameObject = GameObject.Find ("LivesManager");
+		// If LivesManager object exist
+		if (gameObject != null) {
+			// Get LivesManager component
+			lm = gameObject.GetComponent<LivesManager> ();
+					// Display configuration values in scene. (only for demo)
+		} else {
+			Debug.Log("ERROR: LivesManager prefab not found!");
+		}
+	}
     void Update()
     {
         {
@@ -54,15 +66,13 @@ public class GameController : MonoBehaviour
             }
             yield return new WaitForSeconds(waveWait);
 
-            if (gameOver)
-            {
-                restartText.text = "Press 'R' for Restart";
-                restart = true;
-                break;
-            }
+			if (gameOver)
+			{
+				restart = true;
+				break;
+			}
         }
     }
-
     public void AddScore(int newScoreValue)
     {
         score += newScoreValue;
@@ -73,10 +83,19 @@ public class GameController : MonoBehaviour
     {
         scoreText.text = "Score: " + score;
     }
-
-    public void GameOver()
-    {
-        gameOverText.text = "Game Over!";
-        gameOver = true;
-    }
+	public void GameOver ()
+	{
+		gameOverText.text = "Press 'R' for Restart";
+		gameOver = true;
+	}
+	public void canPlay()
+	{
+		if (lm) {
+			if (lm.canPlay ())
+				gameOver = false;
+			}else{
+				int previousLevel = PlayerPrefs.GetInt( "previousLevel" );
+				Application.LoadLevel( previousLevel );
+				}
+	}
 }

@@ -1,4 +1,4 @@
-WindowsStandalone
+OSXStandalone
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.LivesManager
 13f658ffe4a9d4035bd9a51a340c299d Assembly-CSharp.dll:.WFX_Demo
 e1048fb987503d69b1e1255ccf72e1f2 Assembly-CSharp.dll:.CFX_Demo_Translate
